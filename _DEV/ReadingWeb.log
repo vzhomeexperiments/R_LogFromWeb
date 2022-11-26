@@ -1,0 +1,84 @@
+Loading required package: timechange
+
+Attaching package: 'lubridate'
+
+The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union
+
+
+Attaching package: 'tidyr'
+
+The following object is masked from 'package:magrittr':
+
+    extract
+
+
+Attaching package: 'readr'
+
+The following object is masked from 'package:rvest':
+
+    guess_encoding
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Rows: 2 Columns: 62
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (60): ACTUAL ROOM T HC1, SET ROOM TEMPERATURE HC1, RELATIVE HUMIDITY HC...
+lgl   (1): Operating state 2
+dttm  (1): DateTime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+Loading required package: timechange
+
+Attaching package: 'lubridate'
+
+The following objects are masked from 'package:base':
+
+    date, intersect, setdiff, union
+
+
+Attaching package: 'tidyr'
+
+The following object is masked from 'package:magrittr':
+
+    extract
+
+
+Attaching package: 'readr'
+
+The following object is masked from 'package:rvest':
+
+    guess_encoding
+
+
+Attaching package: 'dplyr'
+
+The following objects are masked from 'package:stats':
+
+    filter, lag
+
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
+
+Rows: 3 Columns: 62
+── Column specification ────────────────────────────────────────────────────────
+Delimiter: ","
+dbl  (60): ACTUAL ROOM T HC1, SET ROOM TEMPERATURE HC1, RELATIVE HUMIDITY HC...
+lgl   (1): Operating state 2
+dttm  (1): DateTime
+
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
