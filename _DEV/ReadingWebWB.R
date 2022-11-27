@@ -19,9 +19,8 @@ library(dplyr)
 # create data frame
 # transpose data and log it
 
-# URLs 
-url1 <- "http://192.168.0.224/?s=1,0" #INFO Screen
-url2 <- "http://192.168.0.224/?s=1,1" #HEAT PUMP Screen
+# URLs - log data from Wallbox
+url1 <- "http://192.168.0.44/status.shtml" #INFO Screen
 
 ####-----------------------------------------------------------
 ### INFO Screen
@@ -29,48 +28,25 @@ url2 <- "http://192.168.0.224/?s=1,1" #HEAT PUMP Screen
 stweb1 <- url1 %>% read_html()
 
 # get the values 
-values <- stweb1 %>% html_nodes(".value") %>% html_text()
-# parse numbers
-# replace commas with dots
-values_d <- gsub(",", ".", values) %>% 
-  readr::parse_number()
+values <- stweb1 %>% html_table()
 
-# get the categories
-topics <- stweb1 %>% html_nodes(".key") %>% html_text()
+log_titles <- values[[2]][["X1"]] 
+log_values <- values[[2]][["X2"]]
+
 
 # create data frame
-data1 <- data.frame(topics, values_d, values, stringsAsFactors = FALSE) #%>% View()
+data1 <- data.frame(log_titles, log_values, stringsAsFactors = FALSE) #%>% View()
+
 
 # transpose and rename
-data1_t <- data.frame(t(values_d))
-names(data1_t) <- topics
+data1_t <- data.frame(t(log_values))
+names(data1_t) <- log_titles
 
-####-----------------------------------------------------------
-### HEAT PUMP Screen
-# get the raw data from web
-stweb2 <- url2 %>% read_html()
-
-# get the values 
-values <- stweb2 %>% html_nodes(".value") %>% html_text()
-# parse numbers
-# replace commas with dots
-values_d <- gsub(",", ".", values) %>% 
-  readr::parse_number()
-
-# get the categories
-topics <- stweb2 %>% html_nodes(".key") %>% html_text()
-
-# create data frame
-data2 <- data.frame(topics, values_d, values, stringsAsFactors = FALSE) #%>% View()
-
-# transpose and rename
-data2_t <- data.frame(t(values_d))
-names(data2_t) <- topics
 ####-----------------------------------------------------------
 # get current date and add it to the dataframe 
 c_dt <- Sys.time() %>% as.data.frame() %>% rename(DateTime = ".")
 ### Join data 
-c_data <- bind_cols(c_dt, data1_t, data2_t)
+c_data <- bind_cols(c_dt, data1_t)
 
 ####-----------------------------------------------------------
 ### Data logging
@@ -83,16 +59,10 @@ path_data <- file.path(path_user, "Documents", "HP_Logs")
 # check if the directory exists or create
 if(!dir.exists(path_data)){dir.create(path_data)}
 
-f_name <- paste0(Sys.Date(),"HP", ".csv")
+f_name <- paste0(Sys.Date(), "WB", ".csv")
 f_path <- file.path(path_data, f_name)
 
 # write file fist time
-if(!file.exists(f_path)){
-  write_csv(c_data, f_path)  
-} else {
-  # read and append to the file
-  temp <- read_csv(f_path) 
-  bind_rows(temp, c_data) %>% write_csv(f_path)
-}
+write_csv(c_data, f_path)  
 
 # there will be one file for every day when the R program is running

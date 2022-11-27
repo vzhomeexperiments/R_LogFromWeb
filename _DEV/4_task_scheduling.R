@@ -39,3 +39,18 @@ taskscheduler_create(taskname = "hp_log", rscript = path_script,
                      starttime = "00:01",
                      schtasks_extra = extra_parameters)
 
+# =====================================
+# Task: automate script 
+# =====================================
+
+script_name <- 'ReadingWebWB.R'
+path_script <- file.path(who_user, "Documents", "GitHub", "R_LogFromWeb", "_DEV", script_name)
+
+## Delete task
+taskscheduler_delete("wb_log")
+
+## Setup task
+taskscheduler_create(taskname = "wb_log", rscript = path_script,
+                     schedule = "DAILY",
+                     starttime = "08:01",
+                     schtasks_extra = extra_parameters)

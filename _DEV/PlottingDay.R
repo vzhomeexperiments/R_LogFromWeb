@@ -23,7 +23,7 @@ path_user <- normalizePath(Sys.getenv('USERPROFILE'), winslash = '/')
 path_data <- file.path(path_user, "Documents", "HP_Logs")
 
 # read file
-f_name <- paste(Sys.Date(), ".csv")
+f_name <- paste0(Sys.Date(),"HP", ".csv")
 f_path <- file.path(path_data, f_name)
 
 temp <- read_csv(f_path)
