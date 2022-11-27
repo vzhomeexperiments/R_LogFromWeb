@@ -41,4 +41,32 @@ temp %>%
   select(2, 4) %>% 
   ggplot(aes(`ACTUAL ROOM T HC1`, `RELATIVE HUMIDITY HC1`))+geom_point()
 
+# temperature outside vs temperature inside
+temp %>% 
+  select(2, 8, 29) %>% 
+  ggplot(aes(`ACTUAL ROOM T HC1`,
+             `OUTSIDE TEMPERATURE`,
+             col = as.factor(`HEATING STAGE`)
+             ))+
+  geom_point()
+
+# hot gas pressure vs time
+temp %>% 
+  select(1, 32) %>% 
+  ggplot(aes(DateTime, `HIGH PRESSURE`))+geom_line()
+
+# dhw temp vs time
+temp %>% 
+  select(1, 18) %>% 
+  ggplot(aes(DateTime, `DHW SET TEMPERATURE`))+geom_line()
+
+# heat recovery vs time
+temp %>% 
+  select(1, 47) %>% 
+  ggplot(aes(DateTime, `HEAT M RECOVERY DAY`))+geom_line()
+
+# power used heating vs time
+temp %>% 
+  select(1, 54) %>% 
+  ggplot(aes(DateTime, `PWR CON HTG DAY`))+geom_line()
 
