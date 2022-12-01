@@ -22,11 +22,27 @@ path_user <- normalizePath(Sys.getenv('USERPROFILE'), winslash = '/')
 #absolute path to store data
 path_data <- file.path(path_user, "Documents", "HP_Logs")
 
-# read file
-f_name <- paste0(Sys.Date(),"HP", ".csv")
-f_path <- file.path(path_data, f_name)
+#define number of days to plot
+n_days <- 10
 
-temp <- read_csv(f_path)
+# read files
+l_files <- list.files(path = path_data, pattern = "HP.csv", full.names = TRUE) %>% tail(n_days)
+
+for (FILE in l_files) {
+  #FILE <- l_files[1]
+  if(!exists("temp")){
+    temp <- read_csv(FILE)
+  } else {
+    temp1 <- read_csv(FILE)
+    temp <- bind_rows(temp, temp1)
+  }
+  
+}
+
+# f_name <- paste0(Sys.Date(),"HP", ".csv")
+# f_path <- file.path(path_data, f_name)
+# 
+# temp <- read_csv(f_path)
 
 ####-----------------------------------------------------------
 ### Clean, select variables, visualize
@@ -38,9 +54,12 @@ temp %>%
 
 # relative humidity vs room temperature
 temp %>% 
-  select(2, 4) %>% 
-  ggplot(aes(`ACTUAL ROOM T HC1`, `RELATIVE HUMIDITY HC1`))+geom_point()
-
+  select(2, 4, 29) %>% 
+  ggplot(aes(`ACTUAL ROOM T HC1`,
+             `RELATIVE HUMIDITY HC1`,
+             col = as.factor(`HEATING STAGE`)))+
+  geom_point()+
+  geom_smooth()
 # temperature outside vs temperature inside
 temp %>% 
   select(2, 8, 29) %>% 
@@ -48,7 +67,8 @@ temp %>%
              `OUTSIDE TEMPERATURE`,
              col = as.factor(`HEATING STAGE`)
              ))+
-  geom_point()
+  geom_point()+
+  geom_smooth()
 
 # hot gas pressure vs time
 temp %>% 
@@ -69,4 +89,11 @@ temp %>%
 temp %>% 
   select(1, 54) %>% 
   ggplot(aes(DateTime, `PWR CON HTG DAY`))+geom_line()
+
+# power used vs temperature outside
+temp %>% 
+  select(2, 8, 54) %>% 
+  ggplot(aes(`OUTSIDE TEMPERATURE`,
+             `PWR CON HTG DAY`,
+             size = `ACTUAL ROOM T HC1`))+geom_point()
 
