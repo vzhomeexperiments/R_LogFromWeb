@@ -52,6 +52,12 @@ temp %>%
   select(1, 2) %>% 
   ggplot(aes(DateTime, `ACTUAL ROOM T HC1`))+geom_line()
 
+# room temperature vs time with plotted fit
+temp %>% 
+  select(1, 2) %>% 
+  ggplot(aes(DateTime, `ACTUAL ROOM T HC1`))+geom_line()+
+  geom_smooth()
+
 # relative humidity vs room temperature
 temp %>% 
   select(2, 4, 29) %>% 
